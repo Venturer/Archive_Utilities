@@ -15,6 +15,7 @@
 #  MA 02110-1301, USA.
 
 # Version 1.0, October 2017
+# Version 1.1, November 2017 - Fixed InsertDialogue bug
 
 # PyQt interface imports, Qt5
 from PyQt5.QtWidgets import *
@@ -22,7 +23,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import PyQt5.uic as uic
 
-from ArchiveUtilities import *
+from Utilities import *
 
 
 class EditDialogue(QDialog):
@@ -187,7 +188,7 @@ class InsertDialogue(EditDialogue):
         self.setWindowTitle('Insert Line')
 
         self.pushButtonEditWorked.setEnabled(False)
-        self.pushButton.setEnabled(False)
+        self.pushButtonDeleteWorked.setEnabled(False)
 
 
 class DateDialogue(QDialog):

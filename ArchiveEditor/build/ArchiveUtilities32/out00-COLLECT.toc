@@ -1,0 +1,294 @@
+([('ArchiveUtilities.exe',
+   'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\build\\ArchiveUtilities32\\ArchiveUtilities.exe',
+   'EXECUTABLE'),
+  ('ArchiveUtilities.exe.manifest',
+   'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\build\\ArchiveUtilities32\\ArchiveUtilities32.exe.manifest',
+   'BINARY'),
+  ('VCRUNTIME140.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\VCRUNTIME140.dll',
+   'BINARY'),
+  ('python36.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\python36.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\printsupport\\windowsprintersupport.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\printsupport\\windowsprintersupport.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\sqldrivers\\qsqlmysql.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\sqldrivers\\qsqlmysql.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\platforms\\qminimal.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\platforms\\qminimal.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\imageformats\\qgif.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\imageformats\\qgif.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\imageformats\\qicns.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\imageformats\\qicns.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\sqldrivers\\qsqlite.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\sqldrivers\\qsqlite.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\bearer\\qgenericbearer.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\bearer\\qgenericbearer.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\imageformats\\qtga.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\imageformats\\qtga.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\sqldrivers\\qsqlodbc.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\sqldrivers\\qsqlodbc.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\imageformats\\qico.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\imageformats\\qico.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\bearer\\qnativewifibearer.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\bearer\\qnativewifibearer.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\imageformats\\qjpeg.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\imageformats\\qjpeg.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\sqldrivers\\qsqlpsql.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\sqldrivers\\qsqlpsql.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\imageformats\\qwbmp.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\imageformats\\qwbmp.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\platforms\\qoffscreen.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\platforms\\qoffscreen.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\iconengines\\qsvgicon.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\iconengines\\qsvgicon.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\imageformats\\qwebp.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\imageformats\\qwebp.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\imageformats\\qtiff.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\imageformats\\qtiff.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\imageformats\\qsvg.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\imageformats\\qsvg.dll',
+   'BINARY'),
+  ('PyQt5\\Qt\\plugins\\platforms\\qwindows.dll',
+   'C:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\plugins\\platforms\\qwindows.dll',
+   'BINARY'),
+  ('_ssl',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\DLLs\\_ssl.pyd',
+   'EXTENSION'),
+  ('unicodedata',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\DLLs\\unicodedata.pyd',
+   'EXTENSION'),
+  ('pyexpat',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\DLLs\\pyexpat.pyd',
+   'EXTENSION'),
+  ('_hashlib',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\DLLs\\_hashlib.pyd',
+   'EXTENSION'),
+  ('select',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\DLLs\\select.pyd',
+   'EXTENSION'),
+  ('_bz2',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\DLLs\\_bz2.pyd',
+   'EXTENSION'),
+  ('_lzma',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\DLLs\\_lzma.pyd',
+   'EXTENSION'),
+  ('_socket',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\DLLs\\_socket.pyd',
+   'EXTENSION'),
+  ('PyQt5.QtHelp',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\QtHelp.pyd',
+   'EXTENSION'),
+  ('PyQt5.QtNetwork',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\QtNetwork.pyd',
+   'EXTENSION'),
+  ('PyQt5.QtSql',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\QtSql.pyd',
+   'EXTENSION'),
+  ('sip',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\sip.pyd',
+   'EXTENSION'),
+  ('PyQt5.Qt',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt.pyd',
+   'EXTENSION'),
+  ('PyQt5.QtPrintSupport',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\QtPrintSupport.pyd',
+   'EXTENSION'),
+  ('_elementtree',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\DLLs\\_elementtree.pyd',
+   'EXTENSION'),
+  ('PyQt5.QtGui',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\QtGui.pyd',
+   'EXTENSION'),
+  ('PyQt5.QtCore',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\QtCore.pyd',
+   'EXTENSION'),
+  ('PyQt5.QtWidgets',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\QtWidgets.pyd',
+   'EXTENSION'),
+  ('Qt5Core.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\bin\\qt5core.dll',
+   'BINARY'),
+  ('Qt5PrintSupport.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\bin\\qt5printsupport.dll',
+   'BINARY'),
+  ('Qt5Gui.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\bin\\qt5gui.dll',
+   'BINARY'),
+  ('Qt5Sql.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\bin\\qt5sql.dll',
+   'BINARY'),
+  ('Qt5Network.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\bin\\qt5network.dll',
+   'BINARY'),
+  ('Qt5Svg.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\bin\\qt5svg.dll',
+   'BINARY'),
+  ('python3.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\python3.dll',
+   'BINARY'),
+  ('Qt5Widgets.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\bin\\qt5widgets.dll',
+   'BINARY'),
+  ('Qt5Help.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\bin\\qt5help.dll',
+   'BINARY'),
+  ('MSVCP140.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\bin\\MSVCP140.dll',
+   'BINARY'),
+  ('ContestReporterForm.ui', 'ContestReporterForm.ui', 'DATA'),
+  ('helpbrowser.ui', 'helpbrowser.ui', 'DATA'),
+  ('archiveutilities.qch', 'archiveutilities.qch', 'DATA'),
+  ('sources\\locsquarestest.py', 'locsquarestest.py', 'DATA'),
+  ('ArchiveUtilities.ui', 'ArchiveUtilities.ui', 'DATA'),
+  ('ArchiveMakerForm.ui', 'ArchiveMakerForm.ui', 'DATA'),
+  ('sources\\helpbrowser.py', 'helpbrowser.py', 'DATA'),
+  ('sources\\ArchiveMaker.py', 'ArchiveMaker.py', 'DATA'),
+  ('sources\\ContestReporter.py', 'ContestReporter.py', 'DATA'),
+  ('ArchiveCheckerForm.ui', 'ArchiveCheckerForm.ui', 'DATA'),
+  ('ArchiveEditorForm.ui', 'ArchiveEditorForm.ui', 'DATA'),
+  ('sources\\ArchiveUtilities3.py', 'ArchiveUtilities3.py', 'DATA'),
+  ('sources\\ArchiveEditor.py', 'ArchiveEditor.py', 'DATA'),
+  ('sources\\Utilities.py', 'Utilities.py', 'DATA'),
+  ('sources\\ArchiveCheckerThreaded.py', 'ArchiveCheckerThreaded.py', 'DATA'),
+  ('sources\\Dialogues.py', 'Dialogues.py', 'DATA'),
+  ('LocSquares.ini', 'LocSquares.ini', 'DATA'),
+  ('prefixes.json', 'prefixes.json', 'DATA'),
+  ('sources\\MergeArchives.py', 'MergeArchives.py', 'DATA'),
+  ('MergeArchivesForm.ui', 'MergeArchivesForm.ui', 'DATA'),
+  ('archiveutilities.qhc', 'archiveutilities.qhc', 'DATA'),
+  ('sources\\locsquares.py', 'locsquares.py', 'DATA'),
+  ('DateDialogue.ui', 'DateDialogue.ui', 'DATA'),
+  ('EditDialogue.ui', 'EditDialogue.ui', 'DATA'),
+  ('SpinInputDialogue.ui', 'SpinInputDialogue.ui', 'DATA'),
+  ('base_library.zip',
+   'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\build\\ArchiveUtilities32\\base_library.zip',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\__pycache__\\qtwebkit.cpython-36.pyc',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\__pycache__\\qtwebkit.cpython-36.pyc',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\qtwebkit.py',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\qtwebkit.py',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\qscintilla.py',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\qscintilla.py',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\qaxcontainer.py',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\qaxcontainer.py',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\qtquickwidgets.py',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\qtquickwidgets.py',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\__pycache__\\qscintilla.cpython-36.pyc',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\__pycache__\\qscintilla.cpython-36.pyc',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\__pycache__\\qtprintsupport.cpython-36.pyc',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\__pycache__\\qtprintsupport.cpython-36.pyc',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\qtcharts.py',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\qtcharts.py',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\__pycache__\\qaxcontainer.cpython-36.pyc',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\__pycache__\\qaxcontainer.cpython-36.pyc',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\__pycache__\\qtquickwidgets.cpython-36.pyc',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\__pycache__\\qtquickwidgets.cpython-36.pyc',
+   'DATA'),
+  ('PyQt5\\Qt\\bin\\qt.conf',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\Qt\\bin\\qt.conf',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\qtprintsupport.py',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\qtprintsupport.py',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\__pycache__\\qtwebenginewidgets.cpython-36.pyc',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\__pycache__\\qtwebenginewidgets.cpython-36.pyc',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\__pycache__\\qtcharts.cpython-36.pyc',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\__pycache__\\qtcharts.cpython-36.pyc',
+   'DATA'),
+  ('PyQt5\\uic\\widget-plugins\\qtwebenginewidgets.py',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\uic\\widget-plugins\\qtwebenginewidgets.py',
+   'DATA')],)

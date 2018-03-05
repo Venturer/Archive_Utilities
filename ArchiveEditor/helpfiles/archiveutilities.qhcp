@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<QHelpCollectionProject version="1.0">
+    <assistant>
+      <title>Archive Utilities Help</title>
+      <startPage>qthelp://G4AUC/archiveutilities/ArchiveUtilities.html</startPage>
+    </assistant>
+    <docFiles>
+        <generate>
+            <file>
+                <input>archiveutilities.qhp</input>
+                <output>archiveutilities.qch</output>
+            </file>
+        </generate>
+        <register>
+            <file>archiveutilities.qch</file>
+        </register>
+    </docFiles>
+</QHelpCollectionProject>

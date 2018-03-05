@@ -2,7 +2,7 @@
 
 '''Archive Editor.
 
-    A Qt5 based program template for Python3.
+    A Qt5 based program for Python3.
 
     Edits csl files used by Minos.'''
 
@@ -25,8 +25,6 @@
 
 # standard imports
 import sys
-from copy import copy, deepcopy
-import math
 import os
 
 # PyQt interface imports, Qt5
@@ -37,17 +35,15 @@ import PyQt5.uic as uic
 
 # Archive Editor modules
 from Dialogues import EditDialogue, InsertDialogue
-from ArchiveUtilities import *
+from Utilities import *
+import helpbrowser
+
 
 TITLE = 'Archive Editor 3.0'
 
-
-class MainApp(QMainWindow):
+class MainApp(QWidget):
 
     '''Main Qt5 Window.'''
-
-    # signals emitted by the MainApp
-    runSig = pyqtSignal(str, QListWidget)
 
     edited = False
     fileName = ''
@@ -61,17 +57,16 @@ class MainApp(QMainWindow):
 
         # Load the GUI definition file
         # use 2nd parameter self so that events can be overriden
-        self.ui = uic.loadUi('ArchiveEditor.ui', self)
+        self.ui = uic.loadUi('ArchiveEditorForm.ui', self)
 
         # Create an object to save and restore settings
         self.settings = QSettings('G4AUC', 'ArchiveEditor')
 
         # Restore window position etc. from saved settings
-        try:
-            self.restoreGeometry(self.settings.value('geometry'))
-        except:
-            # exception thrown when there are no saved settings yet
-            pass # starts with geometry from ui file
+        self.restoreGeometry(self.settings.value('geometry', type=QByteArray))
+
+        # Set attribute so the window is deleted completly when closed
+        self.setAttribute(Qt.WA_DeleteOnClose)
 
         # Show the Application
         self.show()
@@ -79,22 +74,41 @@ class MainApp(QMainWindow):
         self.setWindowTitle(TITLE)
 
     @pyqtSlot(bool)
+    def on_pushButtonHelp_clicked(self, checked):
+
+        """Slot triggered when the button is clicked.
+
+            Creates a new help window."""
+
+        path = os.path.dirname(os.path.realpath(__file__))
+
+        collectionFile = os.path.join(
+                path,
+                r"archiveutilities.qhc")
+
+        self.browser = helpbrowser.HelpBrowser(collectionFile, QUrl(r"qthelp://G4AUC/archiveutilities/ArchiveEditor.html"))
+
+    @pyqtSlot(bool)
     def on_pushButtonOpen_clicked(self, checked):
 
         """Slot triggered when the button is clicked.
 
             Opens the .csl file."""
+
         # get the file name to open
+        cslDir = self.settings.value('CslDir', '') # default = ''
         options = QFileDialog.Options()
         self.fileName, _ = QFileDialog.getOpenFileName(self,
                 "Open csl file",
-                '.',
+                cslDir,
                 "csl Files (*.csl);;All Files (*)",
                 options = options)
 
         self.listWidget.clear()
 
         if self.fileName:    # fileName is empty if cancelled
+
+
             with open(self.fileName, 'r') as f:
                 for line in f:
                     self.listWidget.addItem(line.strip())
@@ -107,6 +121,7 @@ class MainApp(QMainWindow):
             self.pushButtonInsert.setEnabled(True)
 
             head, tail = os.path.split(self.fileName)
+            self.settings.setValue('CslDir', head)
             self.setWindowTitle(TITLE + ' - ' + tail)
 
     @pyqtSlot(bool)
@@ -176,18 +191,6 @@ class MainApp(QMainWindow):
             self.edited = True
         editDialogue.done(0)
 
-    @pyqtSlot()
-    def onThreadFinished(self):
-
-        """Slot triggered when the thread issues signal finishedSig."""
-
-        # reenable the buttons now thread method is finished
-        self.pushButtonOpen.setEnabled(True)
-        self.pushButtonEdit.setEnabled(True)
-        self.pushButtonDelete.setEnabled(True)
-        self.pushButtonSave.setEnabled(True)
-        self.pushButtonInsert.setEnabled(True)
-
     @pyqtSlot(bool)
     def on_pushButtonSave_clicked(self, checked):
 
@@ -252,6 +255,7 @@ class MainApp(QMainWindow):
                 self.on_pushButtonSave_clicked(False)
 
         self.settings.setValue("geometry", self.saveGeometry())
+
         event.accept()
 
     # --- Methods not normally modified:
@@ -279,7 +283,7 @@ class MainApp(QMainWindow):
 
 if __name__ == "__main__":
 
-        app = QApplication(sys.argv)
-        mainWindow = MainApp()
-        sys.exit(app.exec_())
+    app = QApplication(sys.argv)
+    mainWindow = MainApp()
+    sys.exit(app.exec_())
 

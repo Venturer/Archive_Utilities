@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<QtHelpProject version="1.0">
+    <virtualFolder>archiveutilities</virtualFolder>
+    <namespace>G4AUC</namespace>
+    <filterSection>
+        <toc>
+          <section title="Archive Utilities" ref="ArchiveUtilities.html">
+            <section title="Archive Maker" ref="ArchiveMaker.html"/>
+            <section title="Archive Checker" ref="ArchiveChecker.html"/>
+            <section title="Merge Archives" ref="MergeArchives.html"/>
+            <section title="Archive Editor" ref="ArchiveEditor.html"/>
+            <section title="Contest Reporter" ref="ContestReporter.html"/>
+          </section>
+        </toc>
+        <keywords>
+            <keyword name="Introduction" ref="ArchiveUtilities.html"/>
+            <keyword name="Archive Maker" ref="ArchiveMaker.html"/>
+            <keyword name="Archive Checker" ref="ArchiveChecker.html"/>
+            <keyword name="Merge Archives" ref="MergeArchives.html"/>
+            <keyword name="Archive Editor" ref="ArchiveEditor.html"/>
+            <keyword name="Contest Reporter" ref="ContestReporter.html"/>
+            <keyword name="Notes" ref="ArchiveUtilities.html#Notes"/>
+            <keyword name="Source Files" ref="ArchiveUtilities.html#Changes"/>
+            <keyword name="Changes from Version 2" ref="ArchiveUtilities.html#Changes"/>
+            <keyword name="Terms of use" ref="ArchiveUtilities.html#TermsOfUse"/>
+            <keyword name="Similar Locators" ref="ArchiveChecker.html#SimilarLocators"/>
+            <keyword name="Similar Locators" ref="ContestReporter.html#SimilarLocators"/>
+        </keywords>
+        <files>
+            <file>ArchiveUtilities.html</file>
+            <file>ArchiveMaker.html</file>
+            <file>ArchiveChecker.html</file>
+            <file>MergeArchives.html</file>
+            <file>ArchiveEditor.html</file>
+            <file>ContestReporter.html</file>
+        </files>
+    </filterSection>
+</QtHelpProject>

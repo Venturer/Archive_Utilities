@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>65ff05b6-1f49-497b-a944-6ff23d40d51a</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>ArchiveEditor.py</StartupFile>
+    <StartupFile>ArchiveUtilities3.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,13 +23,36 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ArchiveCheckerThreaded.py" />
     <Compile Include="ArchiveEditor.py" />
-    <Compile Include="ArchiveUtilities.py" />
+    <Compile Include="ArchiveMaker.py" />
+    <Compile Include="ArchiveUtilities3.py" />
+    <Compile Include="checkformat.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="test_checkformat.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ContestReporter.py" />
     <Compile Include="Dialogues.py" />
+    <Compile Include="helpbrowser.py" />
+    <Compile Include="locsquares.py" />
+    <Compile Include="test_locsquares.py" />
+    <Compile Include="MergeArchives.py" />
+    <Compile Include="Utilities.py" />
+    <Compile Include="test_utilities.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|ContinuumAnalytics|Anaconda36-64" />
-    <InterpreterReference Include="Global|PythonCore|3.5-32" />
+    <InterpreterReference Include="Global|PythonCore|3.6-32" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ArchiveUtilities32.spec" />
+    <Content Include="BuildArchiveUtilities32.bat" />
+    <Content Include="helpcollection.bat" />
+    <Content Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
