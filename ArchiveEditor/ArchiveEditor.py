@@ -22,6 +22,7 @@
 #  MA 02110-1301, USA.
 
 # Version 3.0, November 2017
+# Version 3.0.1 March 2018 - Csl File Open checks format
 
 # standard imports
 import sys
@@ -108,10 +109,22 @@ class MainApp(QWidget):
 
         if self.fileName:    # fileName is empty if cancelled
 
+            warnings = ''
 
-            with open(self.fileName, 'r') as f:
-                for line in f:
-                    self.listWidget.addItem(line.strip())
+            #read the current contents of the .csl file
+            for row in cslRows(csvRows(self.fileName)): # iterate through each row in the file
+
+                try:
+                    line = ",".join([f'"{f}"' if isinstance(f, str) else str(f)  for f in row]) # put line back together
+                    checkformat.checkLine(line)
+                except checkformat.CheckFormatError as e:
+                    warnings += f'{e}\n'
+                self.listWidget.addItem(line)
+
+            if warnings:
+                QMessageBox.warning(self, "File Format Warning!",
+                    warnings,
+                    QMessageBox.Ok)
 
             self.listWidget.setCurrentRow(0)
 

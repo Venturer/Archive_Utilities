@@ -6,9 +6,12 @@
 # Version 3.0.1 February 2018 - checkIfLocatorIsInCorrectCountry now uses
 #   locsquares.py and LocSquares.ini from Minos2
 # Version 3.0.2 - March 2018
-#   unittests from test_utilities.py developed, checkformat.py used to validate input
+#   unittests from test_utilities.py developed
+#   checkformat.py used to validate input
 #   Some functions re-written to be more `Pythonic`
-
+#   Helper functions added
+#   Now needs Python >= 3.6
+# Version 3.0.3 - March 2018 - unQuote reinstated
 
 
 #Copyright (c) 2009,-2011, S J Baugh, G4AUC
@@ -80,6 +83,11 @@ def readEntryFile(fileName, entryList):
     entryList.sort()
 
     return warnings
+
+def unQuote(s):
+    """Removes quotes from around string s (if present)."""
+
+    return s.strip('"')
 
 def csvRows(filename: str, delimiter=',', quotechar='"')-> list:
     """Generator to yield the rows of csv file `filename`.

@@ -47,6 +47,7 @@
   <ItemGroup>
     <InterpreterReference Include="Global|ContinuumAnalytics|Anaconda36-64" />
     <InterpreterReference Include="Global|PythonCore|3.6-32" />
+    <InterpreterReference Include="Global|PythonCore|3.7" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ArchiveUtilities32.spec" />
