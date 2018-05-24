@@ -46,12 +46,12 @@ class EditDialogue(QDialog):
         if len(lineElements) < 5:
             return
 
-        self.lineEditCallsign.setText(unQuote(lineElements[0]))
-        self.lineEditLocator.setText(unQuote(lineElements[1]))
-        self.lineEditExchange.setText(unQuote(lineElements[2]))
+        self.lineEditCallsign.setText(un_quote(lineElements[0]))
+        self.lineEditLocator.setText(un_quote(lineElements[1]))
+        self.lineEditExchange.setText(un_quote(lineElements[2]))
 
         self.comboBoxWorked.clear()
-        dates =  unQuote(lineElements[4]).split(';')
+        dates =  un_quote(lineElements[4]).split(';')
         self.comboBoxWorked.insertItems(-1, dates)
         count = self.comboBoxWorked.count()
         self.comboBoxWorked.removeItem(count - 1)
@@ -162,7 +162,7 @@ class EditDialogue(QDialog):
         for i in range(timesWorked):
             dates += '{:s};'.format(self.comboBoxWorked.itemText(i))
 
-        dates = sortDates(dates)
+        dates = sort_dates(dates)
 
         editedLine = '"{:s}","{:s}","{:s}",{:d},"{:s}"'.format(callsign,
                                                                locator,
@@ -178,7 +178,7 @@ class InsertDialogue(EditDialogue):
 
         Inherited from the EditDialog with window title
         changed and the EditWorked and DeleteWorked
-        buttons initially diabled."""
+        buttons initially disabled."""
 
     def __init__(self):
 

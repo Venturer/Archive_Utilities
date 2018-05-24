@@ -179,6 +179,7 @@ class MainApp(QWidget):
 
                 #Create the report
                 QApplication.setOverrideCursor(Qt.WaitCursor)
+                self.repaint()
                 self.createReport(theArchiveFileName, theEntryFileName, similarLocatorsChecked)
                 QApplication.restoreOverrideCursor()
 
@@ -193,7 +194,7 @@ class MainApp(QWidget):
             #Display the contact
             self.display('  '+contact[0]+','+contact[1]+','+contact[2])
             #Get any fuzzy matches
-            matchesList= fuzzyMatch(contact, similarLocatorsChecked, self.archiveDict)
+            matchesList= fuzzy_match(contact, similarLocatorsChecked, self.archiveDict)
             #Display the fuzzy matches list
             if matchesList!=[]:
                 self.display('    Near Matches:')
@@ -204,7 +205,7 @@ class MainApp(QWidget):
                     else:
                         self.display('       worked '+str(match[3])+' times on '+match[5])
 
-            report = checkLocatorIsInCorrectCountry(contact[0], contact[1])
+            report = check_locator_is_in_correct_country(contact[0], contact[1])
             if report:
                 self.display(report, colour='red')
 
@@ -229,7 +230,7 @@ class MainApp(QWidget):
             else:
                 self.display('      worked '+str(seen[0])+' times on '+seen[1])
             #Get ant fuzzy matches
-            matchesList= fuzzyMatch(contact, similarLocatorsChecked, self.archiveDict)
+            matchesList= fuzzy_match(contact, similarLocatorsChecked, self.archiveDict)
             #Display the fuzzy match list
             if matchesList!=[]:
                 self.display('    Near Matches:')
@@ -239,13 +240,13 @@ class MainApp(QWidget):
                         self.display('       worked once on '+match[5])
                     else:
                         self.display('       worked '+str(match[3])+' times on '+match[5])
-            report= checkLocatorIsInCorrectCountry(contact[0], contact[1])
+            report= check_locator_is_in_correct_country(contact[0], contact[1])
             if report:
                 self.display(report, colour='red')
 
     def createReport(self, theArchiveFileName, theEntryFileName, similarLocatorsChecked):
 
-        #Initialise Lists and dictionary
+        # Initialise Lists and dictionary
         self.entryList=[]
         self.uniqueList=[]
         self.workedBeforeList=[]
@@ -254,9 +255,19 @@ class MainApp(QWidget):
         self.display()
         self.display('Date Format: yyyy/mm/dd')
 
-        readEntryFile(theEntryFileName, self.entryList)
+        warnings = read_entry_file(theEntryFileName, self.entryList)
+        # check returned warnings and display any
+        if warnings:
+            QMessageBox.warning(self, "Entry file Format Warning!",
+                warnings,
+                QMessageBox.Ok)
 
-        readArchiveFile(theArchiveFileName, self.archiveDict)
+        warnings = read_archive_file(theArchiveFileName, self.archiveDict)
+        # check returned warnings and display any
+        if warnings:
+            QMessageBox.warning(self, "Archive file Format Warning!",
+                warnings,
+                QMessageBox.Ok)
 
         for contact in self.entryList:
             if contact not in self.archiveDict:

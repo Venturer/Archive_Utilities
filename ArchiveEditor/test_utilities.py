@@ -12,7 +12,7 @@ class Test_sortDates(unittest.TestCase):
     values = (
         ('1970/01/01;', '1970/01/01;'), # Minimum 1970
         ('2069/12/31;', '2069/12/31;'), # Maximum 2069
-        ('1970/01/01;2069/12/31;','2069/12/31;1970/01/01;'), # 2 dates
+        ('1970/01/01;2069/12/31;', '2069/12/31;1970/01/01;'), # 2 dates
         ('1970/01/01;2069/12/31;2018/02/24;', '2069/12/31;2018/02/24;1970/01/01;'),    # 3 dates
         ('2069/12/31;2018/02/24;1970/01/01;', '2069/12/31;2018/02/24;1970/01/01;'),    # 3 dates already correct
     )
@@ -21,22 +21,22 @@ class Test_sortDates(unittest.TestCase):
 
         for v in self.values:
             with self.subTest(v=v):
-                self.assertEqual(Utilities.sortDates(v[0]), v[1], v)
+                self.assertEqual(Utilities.sort_dates(v[0]), v[1], v)
 
 
 class Test_formatDate(unittest.TestCase):
 
     values = (
-        ('700101', '1970/01/01'), # Minimum 1970
-        ('691231', '2069/12/31'), # Maximum 2069
-        ('180224', '2018/02/24')    # 2018
+        ('700101', '1970/01/01'),  # Minimum 1970
+        ('691231', '2069/12/31'),  # Maximum 2069
+        ('180224', '2018/02/24')   # 2018
     )
 
     def test_formatDate_values(self):
 
         for v in self.values:
             with self.subTest(v=v):
-                self.assertEqual(Utilities.formatDate(v[0]), v[1], v)
+                self.assertEqual(Utilities.format_date(v[0]), v[1], v)
 
 class Test_checkLocatorIsInCorrectCountry(unittest.TestCase):
 
@@ -58,7 +58,7 @@ class Test_checkLocatorIsInCorrectCountry(unittest.TestCase):
     def test_checkLocatorIsInCorrectCountry_values(self):
 
         for call, locator, correct in self.values:
-            result = Utilities.checkLocatorIsInCorrectCountry(call, locator)
+            result = Utilities.check_locator_is_in_correct_country(call, locator)
             #print(call, locator, correct, result)
             if correct is None:
                 self.assertIsNone(result)
@@ -84,7 +84,7 @@ class Test_simularity(unittest.TestCase):
 
         for c1, c2, sim in self.values:
             with self.subTest(c1=c1, c2=c2, sim=sim):
-                self.assertEqual(Utilities.simularity(c1, c2), sim)
+                self.assertEqual(Utilities.similarity(c1, c2), sim)
 
 class Test_removeSuffix(unittest.TestCase):
 
@@ -99,7 +99,7 @@ class Test_removeSuffix(unittest.TestCase):
 
         for v in self.values:
             with self.subTest(v=v):
-                self.assertEqual(Utilities.removeSuffix(v[0]), v[1], v)
+                self.assertEqual(Utilities.remove_suffix(v[0]), v[1], v)
 
 class Test_removePrefix(unittest.TestCase):
 
@@ -115,7 +115,7 @@ class Test_removePrefix(unittest.TestCase):
 
         for v in self.values:
             with self.subTest(v=v):
-                self.assertEqual(Utilities.removePrefix(v[0]), v[1], v)
+                self.assertEqual(Utilities.remove_prefix(v[0]), v[1], v)
 
 class Test_getPrefix(unittest.TestCase):
 
@@ -130,7 +130,7 @@ class Test_getPrefix(unittest.TestCase):
 
         for v in self.values:
             with self.subTest(v=v):
-                self.assertEqual(Utilities.getPrefix(v[0]), v[1], v)
+                self.assertEqual(Utilities.get_prefix(v[0]), v[1], v)
 
 class Test_readArchiveFile(unittest.TestCase):
 
@@ -167,7 +167,7 @@ The line: "G3MEH","IO910S","",1,"2017/03/07;" is not correctly formatted:
     def test_readArchiveFile_produces_correct_dict(self):
 
         archiveDict = {}
-        warnings = Utilities.readArchiveFile(r'readtest.csl', archiveDict)
+        warnings = Utilities.read_archive_file(r'readtest.csl', archiveDict)
         print('\nWarnings')
         print(warnings)
         print(archiveDict)
@@ -208,7 +208,7 @@ class Test_readEdiFile(unittest.TestCase):
     def test_readFromEdiFile(self):
 
         entries = []
-        warnings = Utilities.readEntryFile('testread.EDI', entries)
+        warnings = Utilities.read_entry_file('testread.EDI', entries)
 
         print(' ')
         print('Warnings:\n', warnings)

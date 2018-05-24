@@ -15,13 +15,21 @@
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\stringprep.py',
    'PYMODULE'),
+  ('fnmatch',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\fnmatch.py',
+   'PYMODULE'),
+  ('struct',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\struct.py',
+   'PYMODULE'),
+  ('_compat_pickle',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\_compat_pickle.py',
+   'PYMODULE'),
   ('__future__',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\__future__.py',
-   'PYMODULE'),
-  ('argparse',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\argparse.py',
    'PYMODULE'),
   ('difflib',
    'c:\\program files (x86)\\microsoft visual '
@@ -187,10 +195,6 @@
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\tempfile.py',
    'PYMODULE'),
-  ('subprocess',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\subprocess.py',
-   'PYMODULE'),
   ('tty',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\tty.py',
@@ -202,10 +206,6 @@
   ('pydoc_data.topics',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\pydoc_data\\topics.py',
-   'PYMODULE'),
-  ('textwrap',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\textwrap.py',
    'PYMODULE'),
   ('html.entities',
    'c:\\program files (x86)\\microsoft visual '
@@ -379,14 +379,6 @@
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\tarfile.py',
    'PYMODULE'),
-  ('_dummy_thread',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\_dummy_thread.py',
-   'PYMODULE'),
-  ('dummy_threading',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\dummy_threading.py',
-   'PYMODULE'),
   ('py_compile',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\py_compile.py',
@@ -399,10 +391,6 @@
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\shutil.py',
    'PYMODULE'),
-  ('selectors',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\selectors.py',
-   'PYMODULE'),
   ('socket',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\socket.py',
@@ -414,10 +402,6 @@
   ('pydoc',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\pydoc.py',
-   'PYMODULE'),
-  ('gettext',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\gettext.py',
    'PYMODULE'),
   ('getopt',
    'c:\\program files (x86)\\microsoft visual '
@@ -439,21 +423,9 @@
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\string.py',
    'PYMODULE'),
-  ('_threading_local',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\_threading_local.py',
-   'PYMODULE'),
-  ('threading',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\threading.py',
-   'PYMODULE'),
   ('logging',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\logging\\__init__.py',
-   'PYMODULE'),
-  ('contextlib',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\contextlib.py',
    'PYMODULE'),
   ('unittest.case',
    'c:\\program files (x86)\\microsoft visual '
@@ -467,6 +439,26 @@
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\unittest\\loader.py',
    'PYMODULE'),
+  ('unittest.runner',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\unittest\\runner.py',
+   'PYMODULE'),
+  ('unittest.main',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\unittest\\main.py',
+   'PYMODULE'),
+  ('unittest.signals',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\unittest\\signals.py',
+   'PYMODULE'),
+  ('unittest',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\unittest\\__init__.py',
+   'PYMODULE'),
+  ('doctest',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\doctest.py',
+   'PYMODULE'),
   ('stat',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\stat.py',
@@ -479,17 +471,53 @@
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\posixpath.py',
    'PYMODULE'),
-  ('fnmatch',
+  ('enum',
    'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\fnmatch.py',
+   'studio\\shared\\python36_86\\lib\\enum.py',
    'PYMODULE'),
-  ('struct',
+  ('signal',
    'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\struct.py',
+   'studio\\shared\\python36_86\\lib\\signal.py',
    'PYMODULE'),
-  ('_compat_pickle',
+  ('contextlib',
    'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\_compat_pickle.py',
+   'studio\\shared\\python36_86\\lib\\contextlib.py',
+   'PYMODULE'),
+  ('_threading_local',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\_threading_local.py',
+   'PYMODULE'),
+  ('threading',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\threading.py',
+   'PYMODULE'),
+  ('selectors',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\selectors.py',
+   'PYMODULE'),
+  ('_dummy_thread',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\_dummy_thread.py',
+   'PYMODULE'),
+  ('dummy_threading',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\dummy_threading.py',
+   'PYMODULE'),
+  ('subprocess',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\subprocess.py',
+   'PYMODULE'),
+  ('textwrap',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\textwrap.py',
+   'PYMODULE'),
+  ('gettext',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\gettext.py',
+   'PYMODULE'),
+  ('argparse',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_86\\lib\\argparse.py',
    'PYMODULE'),
   ('pprint',
    'c:\\program files (x86)\\microsoft visual '
@@ -507,33 +535,29 @@
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\warnings.py',
    'PYMODULE'),
-  ('unittest.runner',
+  ('copy',
    'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\unittest\\runner.py',
+   'studio\\shared\\python36_86\\lib\\copy.py',
    'PYMODULE'),
-  ('unittest.main',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\unittest\\main.py',
+  ('helpbrowser',
+   'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\helpbrowser.py',
    'PYMODULE'),
-  ('signal',
+  ('PyQt5',
    'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\signal.py',
+   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\__init__.py',
    'PYMODULE'),
-  ('unittest.signals',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\unittest\\signals.py',
+  ('ContestReporter',
+   'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\ContestReporter.py',
    'PYMODULE'),
-  ('unittest',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\unittest\\__init__.py',
+  ('Utilities',
+   'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\Utilities.py',
    'PYMODULE'),
-  ('doctest',
+  ('csv',
    'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\doctest.py',
+   'studio\\shared\\python36_86\\lib\\csv.py',
    'PYMODULE'),
-  ('enum',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\enum.py',
+  ('checkformat',
+   'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\checkformat.py',
    'PYMODULE'),
   ('locsquares',
    'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\locsquares.py',
@@ -558,30 +582,17 @@
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\configparser.py',
    'PYMODULE'),
-  ('helpbrowser',
-   'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\helpbrowser.py',
-   'PYMODULE'),
-  ('PyQt5',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\site-packages\\PyQt5\\__init__.py',
-   'PYMODULE'),
-  ('ContestReporter',
-   'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\ContestReporter.py',
-   'PYMODULE'),
-  ('Utilities',
-   'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\Utilities.py',
-   'PYMODULE'),
   ('MergeArchives',
    'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\MergeArchives.py',
    'PYMODULE'),
   ('ArchiveCheckerThreaded',
    'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\ArchiveCheckerThreaded.py',
    'PYMODULE'),
-  ('ArchiveUtilities3',
-   'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\ArchiveUtilities3.py',
-   'PYMODULE'),
   ('ArchiveMaker',
    'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\ArchiveMaker.py',
+   'PYMODULE'),
+  ('ArchiveUtilities3',
+   'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\ArchiveUtilities3.py',
    'PYMODULE'),
   ('ArchiveEditor',
    'C:\\Users\\steph\\OneDrive\\Documents\\QtPython\\ArchiveEditor\\ArchiveEditor\\ArchiveEditor.py',
@@ -712,8 +723,4 @@
   ('os',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\os.py',
-   'PYMODULE'),
-  ('copy',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_86\\lib\\copy.py',
    'PYMODULE')])

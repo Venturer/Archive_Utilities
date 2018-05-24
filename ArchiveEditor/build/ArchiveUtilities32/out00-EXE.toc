@@ -41,7 +41,7 @@
  [],
  False,
  False,
- 1519441122,
+ 1527097557,
  [('runw.exe',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_86\\lib\\site-packages\\PyInstaller\\bootloader\\Windows-32bit\\runw.exe',

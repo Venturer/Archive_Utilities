@@ -22,11 +22,10 @@
 #  MA 02110-1301, USA.
 
 # Version 3.0, November 2017
+# Version 3.0 rc2, rc3 May 2018
 
 # standard imports
 import sys
-from copy import copy, deepcopy
-import math
 import os
 
 # PyQt interface imports, Qt5
@@ -42,9 +41,9 @@ import ArchiveCheckerThreaded
 import MergeArchives
 import ContestReporter
 import helpbrowser
-import locsquares
 
-TITLE = 'Archive Utilities 3.0 rc2'
+
+TITLE = 'Archive Utilities 3.0 rc3'
 
 
 class MainApp(QMainWindow):
@@ -70,33 +69,38 @@ class MainApp(QMainWindow):
         # Restore window position etc. from saved settings
         self.restoreGeometry(self.settings.value('geometry', type=QByteArray))
 
-        # Initialise instance variables and Show the Application
+        # Initialise instance variables
         self.maker = None
         self.checker = None
         self.merger = None
         self.editor = None
         self.reporter = None
         self.help = None
+
+        # Show the Application
         self.show()
 
         self.setWindowTitle(TITLE)
-
-        locsquares.initModule()
 
     @pyqtSlot(bool)
     def on_pushButtonHelp_clicked(self, checked):
 
         """Slot triggered when the button is clicked.
 
-            Creates a new help window."""
+            Shows help file."""
 
-        path = os.path.dirname(os.path.realpath(__file__))
+        try:
+            self.help.show()
+        except (AttributeError, RuntimeError):
+            path = os.path.dirname(os.path.realpath(__file__))
 
-        collectionFile = os.path.join(
+            collectionFile = os.path.join(
                 path,
                 r"archiveutilities.qhc")
 
-        self.browser = helpbrowser.HelpBrowser(collectionFile, QUrl(r"qthelp://G4AUC/archiveutilities/ArchiveUtilities.html"))
+            self.browser = helpbrowser.HelpBrowser(collectionFile,
+                                                   QUrl(r"qthelp://G4AUC/archiveutilities/ArchiveUtilities.html"))
+
 
     @pyqtSlot(bool)
     def on_pushButtonArchiveMaker_clicked(self, checked):
@@ -105,7 +109,11 @@ class MainApp(QMainWindow):
 
             Opens the .csl file maker."""
 
-        self.maker = ArchiveMaker.MainApp()
+        try:
+            self.maker.show()
+        except (AttributeError, RuntimeError):
+            self.maker = ArchiveMaker.MainApp()
+
 
     @pyqtSlot(bool)
     def on_pushButtonArchiveChecker_clicked(self, checked):
@@ -114,16 +122,22 @@ class MainApp(QMainWindow):
 
             Opens the .csl file and checks it."""
 
-        self.checker = ArchiveCheckerThreaded.MainApp()
+        try:
+            self.checker.show()
+        except (AttributeError, RuntimeError):
+            self.checker = ArchiveCheckerThreaded.MainApp()
 
     @pyqtSlot(bool)
     def on_pushButtonMergeArchives_clicked(self, checked):
 
         """Slot triggered when the button is clicked.
 
-            Opens the Merge Archive utility."""
+            Opens the .csl file Merger."""
 
-        self.merger = MergeArchives.MainApp()
+        try:
+            self.merger.show()
+        except (AttributeError, RuntimeError):
+            self.merger = MergeArchives.MainApp()
 
     @pyqtSlot(bool)
     def on_pushButtonArchiveEditor_clicked(self, checked):
@@ -132,16 +146,22 @@ class MainApp(QMainWindow):
 
             Opens the .csl file Editor."""
 
-        self.editor = ArchiveEditor.MainApp()
+        try:
+            self.editor.show()
+        except (AttributeError, RuntimeError):
+            self.editor = ArchiveEditor.MainApp()
 
     @pyqtSlot(bool)
     def on_pushButtonContestReporter_clicked(self, checked):
 
         """Slot triggered when the button is clicked.
 
-            Opens the Contest Reporter."""
+            Opens the .csl file Reporter."""
 
-        self.reporter = ContestReporter.MainApp()
+        try:
+            self.reporter.show()
+        except (AttributeError, RuntimeError):
+            self.reporter = ContestReporter.MainApp()
 
     def closeEvent(self, event):
 
@@ -153,18 +173,16 @@ class MainApp(QMainWindow):
             '''
 
         self.settings.setValue("geometry", self.saveGeometry())
-
         if self.help:
             self.help.close()
             del self.help
-
         event.accept()
 
     # --- Methods not normally modified:
 
     def resizeEvent(self, event):
 
-        """Extends inherited QMainWindow resize event.
+        """Extend inherited QMainWindow resize event.
 
             Saves the window geometry."""
 
@@ -174,7 +192,7 @@ class MainApp(QMainWindow):
 
     def moveEvent(self, event):
 
-        """Extends inherited QMainWindow move event.
+        """Extend inherited QMainWindow move event.
 
             Saves the window geometry.."""
 

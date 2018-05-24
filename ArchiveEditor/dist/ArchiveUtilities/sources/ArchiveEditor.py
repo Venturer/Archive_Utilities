@@ -22,6 +22,7 @@
 #  MA 02110-1301, USA.
 
 # Version 3.0, November 2017
+# Version 3.0.1 March 2018 - Csl File Open checks format
 
 # standard imports
 import sys
@@ -65,7 +66,7 @@ class MainApp(QWidget):
         # Restore window position etc. from saved settings
         self.restoreGeometry(self.settings.value('geometry', type=QByteArray))
 
-        # Set attribute so the window is deleted completly when closed
+        # Set attribute so the window is deleted completely when closed
         self.setAttribute(Qt.WA_DeleteOnClose)
 
         # Show the Application
@@ -108,10 +109,24 @@ class MainApp(QWidget):
 
         if self.fileName:    # fileName is empty if cancelled
 
+            warnings = ''
 
-            with open(self.fileName, 'r') as f:
-                for line in f:
-                    self.listWidget.addItem(line.strip())
+            # read the current contents of the .csl file
+
+            for row in csl_rows(csv_rows(self.fileName)):  # Cascaded generators
+                # iterate through each row in the file
+                try:
+                    # put line back together
+                    line = ",".join([f'"{f}"' if isinstance(f, str) else str(f) for f in row])
+                    checkformat.checkLine(line)
+                except checkformat.CheckFormatError as e:
+                    warnings += f'{e}\n'
+                self.listWidget.addItem(line)
+
+            if warnings:
+                QMessageBox.warning(self, "File Format Warning!",
+                    warnings,
+                    QMessageBox.Ok)
 
             self.listWidget.setCurrentRow(0)
 
@@ -182,6 +197,8 @@ class MainApp(QWidget):
             Edits the selected line in the csl file."""
 
         line_text = item.text()
+
+        print('Line Text:', line_text)
 
         # Show an Edit dialogue
         editDialogue = EditDialogue(line_text)
@@ -262,7 +279,7 @@ class MainApp(QWidget):
 
     def resizeEvent(self, event):
 
-        """Override inherited QMainWindow resize event.
+        """Extends inherited QMainWindow resize event.
 
             Saves the window geometry."""
 
@@ -272,7 +289,7 @@ class MainApp(QWidget):
 
     def moveEvent(self, event):
 
-        """Override inherited QMainWindow move event.
+        """Extends inherited QMainWindow move event.
 
             Saves the window geometry.."""
 

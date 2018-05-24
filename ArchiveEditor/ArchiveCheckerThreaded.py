@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-'''Archive Checker 3.
+"""Archive Checker 3.
 
     A Qt5 based program for Python3.
 
-    Manages csl files used by Minos.'''
+    Manages csl files used by Minos."""
 
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -38,16 +38,15 @@ import PyQt5.uic as uic
 # Archive modules
 from Utilities import *
 import helpbrowser
-import ArchiveUtilities3
 
 TITLE = 'Archive Checker 3.0'
 
-def AppendTextToTextEdit(tEdit, txt, colour = 'black'):
 
-    '''Appends the text in txt to the end of the tEdit, a QTextEdit.
+def AppendTextToTextEdit(tEdit, txt, colour='black'):
+    """Appends the text in txt to the end of the tEdit, a QTextEdit.
 
         The text colour is set by the parameter colour.
-        The text is added as a new line in an html table.'''
+        The text is added as a new line in an html table."""
 
     # convert spaces to html escape characters
     text = txt.replace(' ', '&nbsp;')
@@ -81,13 +80,13 @@ def AppendTextToTextEdit(tEdit, txt, colour = 'black'):
 
 
 class Engine(QObject):
-
-    '''A calculation Engine that runs in a thread.'''
+    """A calculation Engine that runs in a thread."""
 
     # Signals emitted by the engine
     finishedSig = pyqtSignal()
     displaySig = pyqtSignal(str, str)
     debugDisplaySig = pyqtSignal(str)
+    warningDisplaySig = pyqtSignal(str)
 
     displayString = ''
     displayCount = 0
@@ -95,48 +94,51 @@ class Engine(QObject):
     @pyqtSlot(str, bool)
     def runEngine(self, TheArchiveFilename, similarLocatorsChecked):
 
-        '''Thread method that runs when the MainApp emits the signal to
+        """Thread method that runs when the MainApp emits the signal to
             run it.
 
-            Emits the signal finishedSig when it has finished.'''
+            Emits the signal finishedSig when it has finished."""
 
-        #Initialise Lists
-        self.archiveDict=dict()
-        self.entryList=[]
+        # Initialise Lists
+        self.archiveDict = dict()
+        self.entryList = []
         self.displayString = ''
 
-        readArchiveFile(TheArchiveFilename, self.archiveDict)
+        warnings = read_archive_file(TheArchiveFilename, self.archiveDict)
+        # check returned warnings and display
+        if warnings:
+            self.warningDisplaySig.emit(warnings)
 
-        Keys= list(self.archiveDict.keys())
+        Keys = list(self.archiveDict.keys())
 
         Keys.sort()
 
-        #iterate over the archiveList
+        # iterate over the archiveList
         for contact in Keys:
 
             timesSeen, dates = self.archiveDict[contact]
 
-            #Display the contact
-            self.display('\n'+'  '+contact[0]+','+contact[1]+','+contact[2])
+            # Display the contact
+            self.display('\n' + '  ' + contact[0] + ',' + contact[1] + ',' + contact[2])
             if timesSeen == 1:
-                self.display('      worked once on '+dates)
+                self.display('      worked once on ' + dates)
             else:
-                self.display('      worked '+str(timesSeen)+' times on '+dates)
+                self.display('      worked ' + str(timesSeen) + ' times on ' + dates)
 
-            # Get ant fuzzy matches
-            matchesList = fuzzyMatch(contact, similarLocatorsChecked, self.archiveDict)
+            # Get any fuzzy matches
+            matchesList = fuzzy_match(contact, similarLocatorsChecked, self.archiveDict)
 
             # Display the fuzzy match list
-            if matchesList!=[]:
+            if matchesList:
                 self.display('    Near Matches:')
                 for match in matchesList:
-                    self.display('    '+match[0]+','+match[1]+','+match[2]+' '+match[4])
-                    if match[3]==1:
-                        self.display('       worked once on '+match[5])
+                    self.display('    ' + match[0] + ',' + match[1] + ',' + match[2] + ' ' + match[4])
+                    if match[3] == 1:
+                        self.display('       worked once on ' + match[5])
                     else:
-                        self.display('       worked '+str(match[3])+' times on '+match[5])
+                        self.display('       worked ' + str(match[3]) + ' times on ' + match[5])
 
-            report = checkLocatorIsInCorrectCountry(contact[0], contact[1])
+            report = check_locator_is_in_correct_country(contact[0], contact[1])
             if report:
                 self.display(report)
 
@@ -154,10 +156,10 @@ class Engine(QObject):
 
     def display(self, *items):
 
-        '''Add the items to self.displayString using their normal string representations
+        """Add the items to self.displayString using their normal string representations
             so that they may be displayed on a text edit control in the Main Window using
             sendDisplay.
-            '''
+            """
 
         display_string = ''
         for item in items:
@@ -168,14 +170,14 @@ class Engine(QObject):
 
     def debug(self, *items):
 
-        '''Display the items on a text edit control in the Main Window
+        """Display the items on a text edit control in the Main Window
             using their normal string representations.
 
             The colour is always orange.
 
             The display may be disabled once the program has
             been debugged by changing MainApp attribute self.showDebug.
-            '''
+            """
 
         display_string = ''
         for item in items:
@@ -186,8 +188,7 @@ class Engine(QObject):
 
 
 class MainApp(QWidget):
-
-    '''Main Qt5 Window.'''
+    """Main Qt5 Window."""
 
     # signals emitted by the MainApp
     runSig = pyqtSignal(str, bool)
@@ -207,12 +208,13 @@ class MainApp(QWidget):
         self.ui = uic.loadUi('ArchiveCheckerForm.ui', self)
 
         # 1 - Create Engine and Thread inside the MainApp
-        self.engine = Engine()      # no parent!
-        self.thread = QThread() # with parent!
+        self.engine = Engine()  # no parent!
+        self.thread = QThread()  # with parent!
 
         # 2 - Connect Engine's Signals to MainApp method slots to post data
         self.engine.displaySig.connect(self.onThreadDisplay)
         self.engine.debugDisplaySig.connect(self.onThreadDebugDisplay)
+        self.engine.warningDisplaySig.connect(self.on_thread_warning_display)
 
         # 3 - Move the Engine object to the Thread object
         self.engine.moveToThread(self.thread)
@@ -227,7 +229,7 @@ class MainApp(QWidget):
         self.runSig.connect(self.engine.runEngine)
 
         # 6 - Start the thread
-        self.thread.start(QThread.LowPriority) # pass parameter QThread.HighPriority etc. if needed
+        self.thread.start(QThread.LowPriority)  # pass parameter QThread.HighPriority etc. if needed
 
         # 7 - Create an object to save and restore settings
         self.settings = QSettings('G4AUC', 'ArchiveChecker')
@@ -235,7 +237,7 @@ class MainApp(QWidget):
         # 8 - restore window position etc. from saved settings
         self.restoreGeometry(self.settings.value('geometry', type=QByteArray))
 
-        # Set attribute so the window is deleted completly when closed
+        # Set attribute so the window is deleted completely when closed
         self.setAttribute(Qt.WA_DeleteOnClose)
 
         # 9 - Show the Application
@@ -252,11 +254,12 @@ class MainApp(QWidget):
 
         path = os.path.dirname(os.path.realpath(__file__))
 
-        collectionFile = os.path.join(
-                path,
-                r"archiveutilities.qhc")
+        collection_file = os.path.join(
+            path,
+            r"archiveutilities.qhc")
 
-        self.browser = helpbrowser.HelpBrowser(collectionFile, QUrl(r"qthelp://G4AUC/archiveutilities/ArchiveChecker.html"))
+        self.browser = helpbrowser.HelpBrowser(collection_file,
+                                               QUrl(r"qthelp://G4AUC/archiveutilities/ArchiveChecker.html"))
 
     @pyqtSlot(bool)
     def on_pushButtonCheck_clicked(self, checked):
@@ -266,21 +269,20 @@ class MainApp(QWidget):
             Checks a .csl file."""
 
         # get the file name to open
-        cslDir = self.settings.value('CslDir', '') # default = ''
+        csl_dir = self.settings.value('CslDir', '')  # default = ''
         options = QFileDialog.Options()
-        fileName, _ = QFileDialog.getOpenFileName(self,
-                "Open csl file",
-                cslDir,
-                "csl Files (*.csl);;All Files (*)")#,
-                #options = options)
+        file_name, _ = QFileDialog.getOpenFileName(self,
+                                                   "Open csl file",
+                                                   csl_dir,
+                                                   "csl Files (*.csl);;All Files (*)")  # ,
+        # options = options)
 
-        if fileName:
-
-            self.display() # blank line
-            self.display('Checking:', fileName, colour='darkgreen')
+        if file_name:
+            self.display()  # blank line
+            self.display('Checking:', file_name, colour='darkgreen')
             self.display()
 
-            head, tail = os.path.split(fileName)
+            head, tail = os.path.split(file_name)
             self.settings.setValue('CslDir', head)
             self.setWindowTitle(TITLE + ' - ' + tail)
 
@@ -292,7 +294,7 @@ class MainApp(QWidget):
             qApp.processEvents(QEventLoop.AllEvents)
 
             self.canClose = False
-            self.runSig.emit(fileName, self.checked)
+            self.runSig.emit(file_name, self.checked)
 
     @pyqtSlot()
     def onThreadFinished(self):
@@ -309,15 +311,15 @@ class MainApp(QWidget):
 
     def closeEvent(self, event):
 
-        '''Override inherited QMainWindow closeEvent.
+        """Override inherited QMainWindow closeEvent.
 
             Do any cleanup actions before the application closes.
 
-            Saves the application geometry.
-            Deletes the engine and thread.
-
-            Accepts the event which closes the application.
-            '''
+            if self.canClose:
+            Saves the application geometry,
+            deletes the engine and thread,
+            accepts the event which closes the window.
+            """
 
         if not self.canClose:
             event.ignore()
@@ -356,29 +358,35 @@ class MainApp(QWidget):
 
         super().moveEvent(event)
 
+    @pyqtSlot(str)
+    def on_thread_warning_display(self, warnings):
+
+        """Allows the thread to display warnings information as a message box."""
+
+        QMessageBox.warning(self, "File Format Warning!",
+                            warnings,
+                            QMessageBox.Ok)
 
     # --- Text Edit display methods, not normally modified:
 
     @pyqtSlot(str, str)
     def onThreadDisplay(self, display_item, colour):
 
-        '''Allows the thread to display information on the text edit
-            in the given colour by emiting displaySig.'''
+        """Allows the thread to display information on the text edit."""
 
-        #self.display(display_item, colour = colour)
+        # self.display(display_item, colour = colour)
         self.textEdit.append(display_item)
 
     @pyqtSlot(str)
     def onThreadDebugDisplay(self, display_item):
 
-        '''Allows the thread to display debug information on the text edit
-            by emiting debugDisplaySig.'''
+        """Allows the thread to display debug information on the text edit."""
 
         self.debug(display_item)
 
-    def display(self, *items, colour = 'black'):
+    def display(self, *items, colour='black'):
 
-        '''Display the items on the text edit control using their normal
+        """Display the items on the text edit control using their normal
             string representations on a single line.
             A space is added between the items.
             Any trailing spaces are removed.
@@ -390,33 +398,33 @@ class MainApp(QWidget):
             The colour may be be any string that may be
             passed to QColor, such as a name like 'red' or
             a hex value such as '#F0F0F0'.
-            '''
+            """
 
         display_string = ''
         for item in items:
             display_string += '{} '.format(item)
 
         tEdit = self.textEdit
-        #tx  = tEdit.text()
-        #tEdit.append(display_string)
+        # tx  = tEdit.text()
+        # tEdit.append(display_string)
         AppendTextToTextEdit(tEdit, display_string.rstrip(' '), colour)
 
     def debug(self, *items):
 
-        '''Display the items on the text edit control using their normal
+        """Display the items on the text edit control using their normal
             string representations.
 
             The colour is fixed at orange.
 
             The display may be disabled once the program has
             been debugged by changing self.showDebug.
-            '''
+            """
 
         if self.showDebug:
-            self.display(*items, colour = 'orange')
+            self.display(*items, colour='orange')
+
 
 if __name__ == "__main__":
-
-        app = QApplication(sys.argv)
-        mainWindow = MainApp()
-        sys.exit(app.exec_())
+    app = QApplication(sys.argv)
+    mainWindow = MainApp()
+    sys.exit(app.exec_())

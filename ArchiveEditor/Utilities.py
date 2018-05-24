@@ -1,5 +1,4 @@
-﻿
-"""Common routines for the Archive Utilities suite of programs."""
+﻿"""Common routines for the Archive Utilities suite of programs."""
 
 # Version 2.2, 2011
 # Version 3.0, November 2017 - Qt5 version
@@ -9,13 +8,14 @@
 #   unittests from test_utilities.py developed
 #   checkformat.py used to validate input
 #   Some functions re-written to be more `Pythonic`
-#   Helper functions added
+#   csv/csl processing functions added
 #   Now needs Python >= 3.6
-# Version 3.0.3 - March 2018 - unQuote reinstated
+# Version 3.0.3 - March 2018 - un_quote reinstated (still used!)
+# Version 3.0.4 - May 2018 - Added exception handling to csv_rows, convert_times_worked_to_int
 
 
-#Copyright (c) 2009,-2011, S J Baugh, G4AUC
-#All rights reserved.
+# Copyright (c) 2009-2018, S J Baugh, G4AUC
+# All rights reserved.
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
@@ -47,49 +47,59 @@ from itertools import zip_longest, repeat
 from functools import partial
 from copy import copy, deepcopy
 
-def readEntryFile(fileName, entryList):
-    """Parses the .edi file and adds the contact details to the list."""
+
+def read_entry_file(file_name: str, entryList: list)-> str:
+    """Parses the .edi file and adds the contact details to the list.
+
+        Returns a string containing any format warnings."""
 
     warnings = ''
 
     # Open the input file
-    with open(fileName, 'r') as f:
+    with open(file_name, 'r') as f:
 
-        for line in f:
-            if '[QSORecords' in line:
-                # skip until the line contains [QSORecords
-                break
+        try:
 
-        for line in f:
-            # fields in 'line' are separated by ';'
-            # split the line and create a list of the fields
-            fields = line.split(';')
+            for line in f:
+                if '[QSORecords' in line:
+                    # skip until the line contains [QSORecords
+                    break
 
-            if len(fields) >= 10: # check >=10 fields (i.e. is a qso record)
+            for line in f:
+                # fields in 'line' are separated by ';'
+                # split the line and create a list of the fields
+                fields = line.split(';')
 
-                #create a tuple (callsign, locator, exchange)
-                callsign, locator, exchange = fields[2], fields[9], fields[8]
+                if len(fields) >= 10:  # check >=10 fields (i.e. is a qso record)
 
-                if not checkformat.checkCallsign(callsign):
-                    warnings += f'{line.strip()}\n    Callsign: {callsign} does not appear to be a valid callsign.\n\n'
+                    # create a tuple: contact = (callsign, locator, exchange)
 
-                if not checkformat.checkLocator(locator):
-                    warnings += f'{line.strip()}\n    Locator: {locator} does not appear to be a valid locator.\n\n'
+                    callsign, locator, exchange = fields[2], fields[9], fields[8]
 
-                contact = (callsign, locator, exchange)
+                    if not checkformat.checkCallsign(callsign):
+                        warnings += f'{line.strip()}\n    Callsign: {callsign} does not appear to be a valid callsign.\n\n'
 
-                entryList.append(contact)
+                    if not checkformat.checkLocator(locator):
+                        warnings += f'{line.strip()}\n    Locator: {locator} does not appear to be a valid locator.\n\n'
+
+                    contact = (callsign, locator, exchange)
+
+                    entryList.append(contact)
+        except UnicodeDecodeError:
+            pass
 
     entryList.sort()
 
     return warnings
 
-def unQuote(s):
+
+def un_quote(s):
     """Removes quotes from around string s (if present)."""
 
     return s.strip('"')
 
-def csvRows(filename: str, delimiter=',', quotechar='"')-> list:
+
+def csv_rows(filename: str, delimiter=',', quotechar='"') -> list:
     """Generator to yield the rows of csv file `filename`.
 
         Yields -> List of strings of the fields in the row
@@ -97,34 +107,39 @@ def csvRows(filename: str, delimiter=',', quotechar='"')-> list:
 
     with open(filename, newline='') as csvfile:
         csvreader = csv.reader(csvfile, delimiter=delimiter, quotechar=quotechar)
-        for row in csvreader:
-            yield row
+        try:
+            for row in csvreader:
+                yield row
+        except UnicodeDecodeError:
+            yield ''
+
 
 def pipeline(data, *funcs):
-    """Call the functions in turn on `data`,
+    """Compose the functions. Call in turn on `data`,
         piping the output from function to function.
 
         Use:
-        pipeline(data, f1, f2, f3, ... fn)
+        pipeline(data, f1[, f2, f3, ... fn])
         or
         pipeline(data, *sequence_of_functions)
 
         Return -> the result of f3(f2(f1(data))) etc.
+
+        Also works with generator functions.
+        Do not mix normal functions and generators.
         """
 
-    accumulator = deepcopy(data) # avoid any chance of changing data in-place
+    accumulator = deepcopy(data)  # avoid any chance of changing data in-place
     for func in funcs:
         accumulator = func(accumulator)
 
     return accumulator
 
 
-def cslRows(csvRows)-> list:
-    """Generator to yield the rows of csl file `filename`.
+def csl_rows(csv_rows) -> list:
+    """Generator to yield the rows of csl file.
 
         Delimiter `,` Quote character = `"`
-
-        Uses Functional(ish!) paradigm
 
         Yields -> List of the fields in the row, with defaults if row length has less than 5 fields:
             [callsign: str, locator: str, exchange: str, timesWorked: int, dates: str]
@@ -133,53 +148,62 @@ def cslRows(csvRows)-> list:
     defaults = ['', '', '', 1, '']
 
     # row processing functions
-    padTheRow = partial(padListWithDefaults, padding=defaults) # make into a single arg func
-    stripRowFields = lambda row: [f.strip()  for f in row]
+    pad_the_row = partial(pad_list_with_defaults, padding=defaults)  # make into a single arg func
+    strip_row_fields = lambda row: [f.strip() for f in row]
 
-    for i, row in enumerate(csvRows):
+    for i, row in enumerate(csv_rows):
 
-        # Skip any title row at begining
+        # Skip any title row at beginning
         if i == 0 and len(row) < 2:
             continue
 
-        # Equivalent to: yield convertTimesWorkedToInt( padTheRow( stripRow(row)))
-        yield pipeline(row, stripRowFields, padTheRow, convertTimesWorkedToInt)
+        # Equivalent to: yield convert_times_worked_to_int( pad_the_row( strip_row_fields(row)))
+        yield pipeline(row, strip_row_fields, pad_the_row, convert_times_worked_to_int)
 
-def padListWithDefaults(in_seq, padding)-> list:
+
+def pad_list_with_defaults(in_seq, padding) -> list:
     """Pad the in_seq with the appropriate values(s) from
         padding if in_seq is shorter than padding.
 
-        if in_list item is None the default will be applied to that item.
+        if in_seq item is None the default will be applied to that item.
         padding is a sequence.
         """
 
-    return [a if a is not None else b  for a, b in zip_longest(in_seq, padding)]
+    return [a if a is not None else b for a, b in zip_longest(in_seq, padding)]
 
-def convertTimesWorkedToInt(paddedRow: list)-> list:
+
+def convert_times_worked_to_int(padded_row: list) -> list:
     """Convert field 3 (timesWorked) to an int (if not an int already)."""
 
-    paddedRow[3] = int(paddedRow[3])
+    try:
+        padded_row[3] = int(padded_row[3])
+    except ValueError:
+        # if field won't convert to int due to incorrect file format
+        pass
 
-    return paddedRow
+    return padded_row
 
-def readArchiveFile(fileName, archiveDict):
+
+def read_archive_file(file_name: str, archiveDict: dict)-> str:
     """Reads an existing .csl file and appends the contents
         to the archiveDict Dictionary.
 
-        Assume the file exists, read the current contents."""
+        Assume the file exists, read the current contents.
+
+        Returns a string containing any format warnings."""
 
     warnings = ''
 
-    #read the current contents of the .csl file
-    for row in cslRows(csvRows(fileName)): # iterate through each row in the file
+    # read the current contents of the .csl file
+    for row in csl_rows(csv_rows(file_name)):  # iterate through each row in the file
 
         try:
-            line = ",".join([f'"{f}"' if isinstance(f, str) else str(f)  for f in row]) # put line back together
+            line = ",".join([f'"{f}"' if isinstance(f, str) else str(f) for f in row])  # put line back together
             checkformat.checkLine(line)
         except checkformat.CheckFormatError as e:
             warnings += f'{e}\n'
 
-        callsign, locator, exchange, timesSeen, dates = row[:5] # ignore extra fields
+        callsign, locator, exchange, timesSeen, dates = row[:5]  # ignore extra fields
 
         contact = (callsign, locator, exchange)
 
@@ -188,7 +212,8 @@ def readArchiveFile(fileName, archiveDict):
 
     return warnings
 
-def simularity(s1, s2):
+
+def similarity(s1: str, s2: str)-> int:
     """Checks to see how many places that characters match
         in the strings `s1` and `s2`."""
 
@@ -197,7 +222,8 @@ def simularity(s1, s2):
 
     return same
 
-def removePrefix(callsign):
+
+def remove_prefix(callsign: str)-> str:
     """Return a string consisting of a callsign with its prefix removed."""
 
     posn = 0
@@ -206,38 +232,37 @@ def removePrefix(callsign):
     if callsign:
         if callsign[0].isnumeric():
             # callsign starts with a number
-            posn += 1 # skip past it
+            posn += 1  # skip past it
 
         while (posn < clen) and (not callsign[posn].isnumeric()):
-            posn += 1 # skip past prefix letters
+            posn += 1  # skip past prefix letters
 
         while (posn < clen) and callsign[posn].isnumeric():
-            posn += 1 # skip past prefix numbers
+            posn += 1  # skip past prefix numbers
 
         # posn now points to rest of callsign after the prefix
 
-        return callsign[posn:] # return rest of callsign
+        return callsign[posn:]  # return rest of callsign
     else:
         return ''
 
-def getPrefix(callsign):
-    """Return a string consisting of the callsign prefix without the last number.
 
-        No longer used?."""
+def get_prefix(callsign: str)-> str:
+    """Return a string consisting of the callsign prefix without the last number."""
 
-    posn=0
-    clen=len(callsign)
+    posn = 0
+    clen = len(callsign)
 
     if callsign != '':
         if callsign[0].isnumeric():
             # callsign starts with a number
-            posn += 1 # skip past it
+            posn += 1  # skip past it
 
         while (posn < clen) and (not callsign[posn].isnumeric()):
-            posn += 1 # skip past prefix letters
+            posn += 1  # skip past prefix letters
 
         while (posn < clen) and (callsign[posn].isnumeric()):
-            posn += 1 # skip past prefix numbers
+            posn += 1  # skip past prefix numbers
 
         # `posn` now points to rest of callsign after the prefix
 
@@ -246,85 +271,96 @@ def getPrefix(callsign):
     else:
         return ''
 
-def removeSuffix(callsign):
-        """Return a string consisting of a callsign with its suffix removed."""
 
-        slashPosn = callsign.rfind('/')
-        if slashPosn != -1:
-            return callsign[:slashPosn]
-        else:
-            return callsign
+def remove_suffix(callsign: str)-> str:
+    """Return a string consisting of a callsign with its suffix removed."""
 
-def fuzzyMatch(contact: tuple, similarLocatorsChecked: bool, archiveDict: dict)-> list:
-    """Find matches of contact in the archiveList in a fuzzy manner.
+    slashPosn = callsign.rfind('/')
+    if slashPosn != -1:
+        return callsign[:slashPosn]
+    else:
+        return callsign
+
+
+def fuzzy_match(contact: tuple, similar_locators_checked: bool, archive_dict: dict) -> list:
+    """Find matches of `contact` in the archive_dict in a fuzzy manner.
 
         contact -> (callsign: str, locator: str, exchange: str)
 
-        archiveDict -> e.g.  {('G0SKA', 'IO91QN', 'SL'): [2, '2017/04/04;2017/03/07;'],
+        archive_dict -> e.g.  {('G0SKA', 'IO91QN', 'SL'): [2, '2017/04/04;2017/03/07;'],
                              ('G1KAW', 'IO91RH', ''): [1, '2017/03/07;']
                              }
 
         Return a list of matching contacts which is a list of tuples like:
-            ('G4AUC', 'IO91OJ', 'RG', 1, (same locator), dates)"""
+            ('G4AUC', 'IO91OJ', 'RG', 1, '(same locator)', 'dates')"""
 
     # How fuzzy locator and callsign matches should be, 0=exact match
-    locatorThreshold = 1
-    callsignThreshold = 1
+    locator_threshold = 1
+    callsign_threshold = 1
 
-    fuzzyMatchesList = [] # Contents eg: ('G4AUC', 'IO91OJ', 'RG', 1, (same locator), dates)
+    fuzzy_matches_list = []  # Contents eg: ('G4AUC', 'IO91OJ', 'RG', 1, '(same locator)', 'dates')
 
-    for archiveContact, whenWorked in archiveDict.items():
+    for archive_contact, when_worked in archive_dict.items():
 
-        # whenWorked e.g. [1, '2018/1/2;']
-        # archiveContact = (callsign, locator, exchange)
+        # when_worked e.g. [1, '2018/1/2;']
+        # archive_contact = (callsign, locator, exchange)
 
-        if not (contact == archiveContact):
+        if not (contact == archive_contact):
 
-            #similar locators (performed ONLY if Checked is True)
-            if similarLocatorsChecked and (contact[1]):
-                if simularity(contact[1], archiveContact[1]) >= len(contact[1]) - locatorThreshold:
-                    fuzzyMatchesList.append((archiveContact[0], archiveContact[1], archiveContact[2], whenWorked[0], '(similar locator)', whenWorked[1]))
+            # similar locators (performed ONLY if similar_locators_checked is True)
+            if similar_locators_checked and (contact[1]):
+                if similarity(contact[1], archive_contact[1]) >= len(contact[1]) - locator_threshold:
+                    fuzzy_matches_list.append((archive_contact[0], archive_contact[1], archive_contact[2], when_worked[0],
+                                             '(similar locator)', when_worked[1]))
 
-            #Same locator
-            if contact[1] == archiveContact[1]:
-                fuzzyMatchesList.append((archiveContact[0], archiveContact[1], archiveContact[2], whenWorked[0], '(same locator)', whenWorked[1]))
+            # Same locator
+            if contact[1] == archive_contact[1]:
+                fuzzy_matches_list.append((archive_contact[0], archive_contact[1], archive_contact[2], when_worked[0],
+                                         '(same locator)', when_worked[1]))
 
-            #Different locators
-            if (contact[0] == archiveContact[0]) and (contact[1] != archiveContact[1]):
-                fuzzyMatchesList.append((archiveContact[0], archiveContact[1], archiveContact[2], whenWorked[0], '(different locator)', whenWorked[1]))
+            # Different locators
+            if (contact[0] == archive_contact[0]) and (contact[1] != archive_contact[1]):
+                fuzzy_matches_list.append((archive_contact[0], archive_contact[1], archive_contact[2], when_worked[0],
+                                         '(different locator)', when_worked[1]))
 
-            #check callsigns
-            sameness = simularity(contact[0], archiveContact[0])
-            if (sameness >= len(contact[0]) - callsignThreshold) and (sameness != len(contact[0])):
-                fuzzyMatchesList.append((archiveContact[0], archiveContact[1], archiveContact[2], whenWorked[0], '(similar callsign)', whenWorked[1]))
+            # check callsigns
+            sameness = similarity(contact[0], archive_contact[0])
+            if (sameness >= len(contact[0]) - callsign_threshold) and (sameness != len(contact[0])):
+                fuzzy_matches_list.append((archive_contact[0], archive_contact[1], archive_contact[2], when_worked[0],
+                                         '(similar callsign)', when_worked[1]))
 
-            if contact[0] != archiveContact[0]:
+            if contact[0] != archive_contact[0]:
 
-                #different prefix
-                if removeSuffix(contact[0]) == removeSuffix(archiveContact[0]):
-                    fuzzyMatchesList.append((archiveContact[0], archiveContact[1], archiveContact[2], whenWorked[0], '(different suffix)', whenWorked[1]))
+                # different prefix
+                if remove_suffix(contact[0]) == remove_suffix(archive_contact[0]):
+                    fuzzy_matches_list.append((archive_contact[0], archive_contact[1], archive_contact[2], when_worked[0],
+                                             '(different suffix)', when_worked[1]))
 
-                #different suffix
-                if removePrefix(contact[0]) == removePrefix(archiveContact[0]):
-                    fuzzyMatchesList.append((archiveContact[0], archiveContact[1], archiveContact[2], whenWorked[0], '(different prefix)', whenWorked[1]))
+                # different suffix
+                if remove_prefix(contact[0]) == remove_prefix(archive_contact[0]):
+                    fuzzy_matches_list.append((archive_contact[0], archive_contact[1], archive_contact[2], when_worked[0],
+                                             '(different prefix)', when_worked[1]))
 
-    return fuzzyMatchesList
+    return fuzzy_matches_list
 
-def checkLocatorIsInCorrectCountry(Callsign, Locator):
+
+def check_locator_is_in_correct_country(callsign: str, locator: str)-> str:
     """Checks to see if the Callsign and Locator square are consistent.
         """
+
     # Initialise the module if not already done
     if locsquares.locatorsquares is None:
         locsquares.initModule()
 
-    if not locsquares.isLocInCountry(Callsign, Locator):
-        report = f'    Prefix of {Callsign} is not in Locator Square {Locator}'
+    if not locsquares.isLocInCountry(callsign, locator):
+        report = f'    Prefix of {callsign} is not in Locator Square {locator}'
     else:
         report = None
 
     return report
 
-def sortDates(dates):
+
+def sort_dates(dates: str)-> str:
     """Sort a string of dates into reverse date order.
 
         e.g.
@@ -333,57 +369,59 @@ def sortDates(dates):
         """
 
     # create a list of the dates, separated by ';'
-    dList = dates.split(';')
+    d_list = dates.split(';')
 
     # sort the dates
-    dList.sort(reverse=True)
+    d_list.sort(reverse=True)
 
     # make a string of the sorted dates
-    datesOut = ''.join([f'{s};'  for s in dList if s])
+    dates_out = ''.join([f'{s};' for s in d_list if s])
 
-    return datesOut
+    return dates_out
 
-def reWriteCSL(fileName, archiveDict):
-    """Re-writes (or creates) the .csl file from the archiveDict.
 
-        always include timesSeen and quotes in this version."""
+def re_write_csl(file_name: str, archive_dict: dict)-> None:
+    """Re-writes (or creates) the .csl file from the archive_dict.
+
+        always include times_seen and quotes in this version."""
 
     # re-open the csl file, for write this time
-    with open(fileName,'w') as fs:
+    with open(file_name, 'w') as fs:
 
-        keyList = list(archiveDict.keys())
-        keyList.sort() # Sort the keys so that the Dict can be written in callsign order
+        key_list = list(archive_dict.keys())
+        key_list.sort()  # Sort the keys so that the Dict can be written in callsign order
 
         # re-write the list
-        for p in keyList:
-            callsignOut, locatorOut, exchangeOut = p
-            timesSeen, dates = archiveDict[p]
-            datesSorted = sortDates(dates)
+        for p in key_list:
+            callsign_out, locator_out, exchange_out = p
+            times_seen, dates = archive_dict[p]
+            dates_sorted = sort_dates(dates)
 
-            if (callsignOut) or (exchangeOut):  # ignore blank callsign entries unless title
-                fs.write('"{:s}","{:s}","{:s}","{:d}","{:s}"\n'.format(callsignOut, locatorOut,
-                                                                       exchangeOut, timesSeen, datesSorted))
+            if callsign_out or exchange_out:  # ignore blank callsign entries unless title
+                fs.write('"{:s}","{:s}","{:s}","{:d}","{:s}"\n'.format(callsign_out, locator_out,
+                                                                       exchange_out, times_seen, dates_sorted))
 
-def formatDate(DateIn):
+
+def format_date(date_in: str)-> str:
     """Format the date as 'yyyy/mm/dd'
 
-        DateIn is 'yymmdd'
+        Date In is 'yymmdd'
         Century break taken as year==70."""
 
-    year=DateIn[:2]
-    month=DateIn[2:4]
-    day=DateIn[4:]
+    year = date_in[:2]
+    month = date_in[2:4]
+    day = date_in[4:]
 
-    #Convert the year to an integer, allowing for leading zeroes
+    # Convert the year to an integer, allowing for leading zeroes
     if year[0] == '0':
-        yearInt = int(year[1:2])
+        year_int = int(year[1:2])
     else:
-        yearInt=int(year)
+        year_int = int(year)
 
-    #00 to 69 as 2000+year, 70 to 99 as 1900+year
-    if yearInt >= 70:
-        yearOut ='19' + year
+    # 00 to 69 as 2000+year, 70 to 99 as 1900+year
+    if year_int >= 70:
+        year_out = '19' + year
     else:
-        yearOut ='20' + year
+        year_out = '20' + year
 
-    return f'{yearOut}/{month}/{day}'
+    return f'{year_out}/{month}/{day}'

@@ -179,9 +179,19 @@ class MainApp(QWidget):
         self.display()
         self.display('Contacts added to Archive')
 
-        readArchiveFile(ArchiveFirstFileName, self.archiveFirstDict)
+        warnings = read_archive_file(ArchiveFirstFileName, self.archiveFirstDict)
+        # check returned warnings and display any
+        if warnings:
+            QMessageBox.warning(self, "First archive file Format Warning!",
+                                warnings,
+                                QMessageBox.Ok)
 
-        readArchiveFile(ArchiveSecondFileName, self.archiveSecondDict)
+        warnings = read_archive_file(ArchiveSecondFileName, self.archiveSecondDict)
+        # check returned warnings and display any
+        if warnings:
+            QMessageBox.warning(self, "Second archive file Format Warning!",
+                                warnings,
+                                QMessageBox.Ok)
 
         for contact in self.archiveFirstDict:
             if contact not in self.archiveSecondDict:
@@ -191,7 +201,7 @@ class MainApp(QWidget):
                 self.archiveSecondDict[contact][0]+=self.archiveFirstDict[contact][0]
                 self.archiveSecondDict[contact][1]+=self.archiveFirstDict[contact][1]
 
-        reWriteCSL(ArchiveSecondFileName, self.archiveSecondDict)
+        re_write_csl(ArchiveSecondFileName, self.archiveSecondDict)
 
     def closeEvent(self, event):
 

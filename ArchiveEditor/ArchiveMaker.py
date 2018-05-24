@@ -29,15 +29,14 @@ from copy import copy, deepcopy
 import math
 import os
 
+import ArchiveUtilities3
+
 # PyQt interface imports, Qt5
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import PyQt5.uic as uic
 
-# Add commom modules to the system path
-path = os.path.join('..', '..', 'common\\')
-sys.path.append(path)
 
 # Archive modules
 from Utilities import *
@@ -107,7 +106,7 @@ class MainApp(QWidget):
         # Restore window position etc. from saved settings
         self.restoreGeometry(self.settings.value('geometry', type=QByteArray))
 
-        # Set attribute so the window is deleted completly when closed
+        # Set attribute so the window is deleted completely when closed
         self.setAttribute(Qt.WA_DeleteOnClose)
 
         # Show the Application
@@ -187,6 +186,7 @@ class MainApp(QWidget):
             self.setWindowTitle(TITLE + ' - ' + tail)
 
             QApplication.setOverrideCursor(Qt.WaitCursor)
+            self.redraw()
             self.addEdiFiles(fileName, head, tail)
             QApplication.restoreOverrideCursor()
 
@@ -212,7 +212,12 @@ class MainApp(QWidget):
             #initialise the dictionary
             self.archiveDict=dict()
 
-            readArchiveFile(cslFile, self.archiveDict)
+            warnings = read_archive_file(cslFile, self.archiveDict)
+            # check returned warnings and display any
+            if warnings:
+                QMessageBox.warning(self, "File Format Warning!",
+                    warnings,
+                    QMessageBox.Ok)
 
             self.processAllEdiFiles(files, cslFile)
 
@@ -226,7 +231,7 @@ class MainApp(QWidget):
             self.display()
 
         #Re-write the processed archive
-        reWriteCSL(cslFile, self.archiveDict)
+        re_write_csl(cslFile, self.archiveDict)
 
     def addNewContacts(self, FileName, archiveDict):
 
@@ -239,7 +244,7 @@ class MainApp(QWidget):
         f = open(FileName,'r')
 
         try:
-            for line in f:      #iterate through all the lines in file 'f'
+            for line in f:      # iterate through all the lines in file 'f'
 
                 if gettingData:
 
@@ -251,7 +256,7 @@ class MainApp(QWidget):
 
                         #create a tuple (callsign,locator,exchange)
                         contact=(parameters[2],parameters[9],parameters[8])
-                        date = formatDate(parameters[0])
+                        date = format_date(parameters[0])
 
                         if contact not in archiveDict:
                             if contact[0]!='': #ignore blank callsign entries
@@ -289,6 +294,7 @@ class MainApp(QWidget):
             '''
 
         self.settings.setValue("geometry", self.saveGeometry())
+        #ArchiveUtilities3.mainWindow.maker = None
         
         event.accept()
 
