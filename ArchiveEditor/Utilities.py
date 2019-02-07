@@ -149,16 +149,16 @@ def csl_rows(csv_rows) -> list:
 
     # row processing functions
     pad_the_row = partial(pad_list_with_defaults, padding=defaults)  # make into a single arg func
-    strip_row_fields = lambda row: [f.strip() for f in row]
+
+    def strip_row_fields(row):
+        return [f.strip() for f in row]
 
     for i, row in enumerate(csv_rows):
 
         # Skip any title row at beginning
-        if i == 0 and len(row) < 2:
-            continue
-
-        # Equivalent to: yield convert_times_worked_to_int( pad_the_row( strip_row_fields(row)))
-        yield pipeline(row, strip_row_fields, pad_the_row, convert_times_worked_to_int)
+        if i == 0 and len(row) >= 2:
+            # Equivalent to: yield convert_times_worked_to_int( pad_the_row( strip_row_fields(row)))
+            yield pipeline(row, strip_row_fields, pad_the_row, convert_times_worked_to_int)
 
 
 def pad_list_with_defaults(in_seq, padding) -> list:
@@ -196,7 +196,6 @@ def read_archive_file(file_name: str, archiveDict: dict)-> str:
 
     # read the current contents of the .csl file
     for row in csl_rows(csv_rows(file_name)):  # iterate through each row in the file
-
         try:
             line = ",".join([f'"{f}"' if isinstance(f, str) else str(f) for f in row])  # put line back together
             checkformat.checkLine(line)

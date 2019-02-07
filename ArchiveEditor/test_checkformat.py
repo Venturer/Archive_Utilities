@@ -122,6 +122,7 @@ class Test_checkcallsign_test(unittest.TestCase):
         '31F/G4AUC',
         '0B5AUC',
         'g4auc',
+        'G4AUC/',
         1,
         1.5,
         -2,
