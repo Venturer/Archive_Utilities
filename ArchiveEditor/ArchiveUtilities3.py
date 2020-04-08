@@ -24,6 +24,7 @@
 # Version 3.0, November 2017
 # Version 3.0 rc2, rc3 May 2018
 # Version 3.0 rc4 Feb 2019
+# Version 3.0 Release April 2020
 
 # standard imports
 import sys
@@ -44,7 +45,7 @@ import ContestReporter
 import helpbrowser
 
 
-TITLE = 'Archive Utilities 3.0 rc4'
+TITLE = 'Archive Utilities 3.0'
 
 
 class MainApp(QMainWindow):
