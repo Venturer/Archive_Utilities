@@ -238,7 +238,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     head, tail = os.path.split(sys.argv[0])
-    helpCollection = os.path.join(head, r"helpfiles\archiveutilities.qhc")
+    helpCollection = os.path.join(head, r"helpfiles/archiveutilities.qhc")
 
     startUrl = QUrl(r"qthelp://G4AUC/archiveutilities/ArchiveUtilities.html")
 

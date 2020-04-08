@@ -22,7 +22,8 @@
 #  MA 02110-1301, USA.
 
 # Version 3.0, November 2017
-# Version 3.0 rc2 May 2018
+# Version 3.0 rc2, rc3 May 2018
+# Version 3.0 rc4 Feb 2019
 
 # standard imports
 import sys
@@ -43,7 +44,7 @@ import ContestReporter
 import helpbrowser
 
 
-TITLE = 'Archive Utilities 3.0 rc3'
+TITLE = 'Archive Utilities 3.0 rc4'
 
 
 class MainApp(QMainWindow):

@@ -28,6 +28,7 @@ import sys
 from copy import copy, deepcopy
 import math
 import os
+from contextlib import contextmanager
 
 import ArchiveUtilities3
 
@@ -42,6 +43,24 @@ from Utilities import *
 import helpbrowser
 
 TITLE = 'Archive Maker 3.0'
+
+
+@contextmanager
+def wait_cursor():
+    """Context manager to set a waiting cursor while a block
+        of code in a with statement runs.
+
+        Use:
+        with wait_cursor():
+            pass # long process
+
+        Do not use a dialog within the with block.
+        """
+    try:
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        yield
+    finally:
+        QApplication.restoreOverrideCursor()
 
 
 def AppendTextToTextEdit(tEdit, txt, colour='black'):
@@ -185,7 +204,8 @@ class MainApp(QWidget):
             self.setWindowTitle(TITLE + ' - ' + tail)
 
             self.progressBar.setMaximum(0)
-            self.addEdiFiles(fileName, head, tail)
+            with wait_cursor():
+                self.addEdiFiles(fileName, head, tail)
             self.progressBar.setMaximum(1)
             self.progressBar.setValue(1)
 

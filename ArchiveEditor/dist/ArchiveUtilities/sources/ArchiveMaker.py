@@ -28,6 +28,7 @@ import sys
 from copy import copy, deepcopy
 import math
 import os
+from contextlib import contextmanager
 
 import ArchiveUtilities3
 
@@ -37,18 +38,32 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import PyQt5.uic as uic
 
-# Add commom modules to the system path
-path = os.path.join('..', '..', 'common\\')
-sys.path.append(path)
-
 # Archive modules
 from Utilities import *
 import helpbrowser
 
 TITLE = 'Archive Maker 3.0'
 
-def AppendTextToTextEdit(tEdit, txt, colour = 'black'):
 
+@contextmanager
+def wait_cursor():
+    """Context manager to set a waiting cursor while a block
+        of code in a with statement runs.
+
+        Use:
+        with wait_cursor():
+            pass # long process
+
+        Do not use a dialog within the with block.
+        """
+    try:
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        yield
+    finally:
+        QApplication.restoreOverrideCursor()
+
+
+def AppendTextToTextEdit(tEdit, txt, colour='black'):
     '''Appends the text in txt to the end of the tEdit, a QTextEdit.
 
         The text colour is set by the parameter colour.
@@ -86,7 +101,6 @@ def AppendTextToTextEdit(tEdit, txt, colour = 'black'):
 
 
 class MainApp(QWidget):
-
     '''Main Qt5 Window.'''
 
     edited = False
@@ -127,10 +141,11 @@ class MainApp(QWidget):
         path = os.path.dirname(os.path.realpath(__file__))
 
         collectionFile = os.path.join(
-                path,
-                r"archiveutilities.qhc")
+            path,
+            r"archiveutilities.qhc")
 
-        self.browser = helpbrowser.HelpBrowser(collectionFile, QUrl(r"qthelp://G4AUC/archiveutilities/ArchiveMaker.html"))
+        self.browser = helpbrowser.HelpBrowser(collectionFile,
+                                               QUrl(r"qthelp://G4AUC/archiveutilities/ArchiveMaker.html"))
 
     @pyqtSlot(bool)
     def on_pushButtonCreate_clicked(self, checked):
@@ -139,14 +154,14 @@ class MainApp(QWidget):
 
             Creates a new .csl file."""
 
-        cslDir = self.settings.value('CslDir', '') # default = ''
+        cslDir = self.settings.value('CslDir', '')  # default = ''
         defaultFile = os.path.join(cslDir, 'untitled.csl')
         options = QFileDialog.Options()
         fileName, _ = QFileDialog.getSaveFileName(self,
-                "New csl file",
-                defaultFile,
-                "csl Files (*.csl);;All Files (*)",
-                options=options)
+                                                  "New csl file",
+                                                  defaultFile,
+                                                  "csl Files (*.csl);;All Files (*)",
+                                                  options=options)
 
         if fileName:
             head, tail = os.path.split(fileName)
@@ -170,15 +185,15 @@ class MainApp(QWidget):
             Adds .edi files to a .csl file."""
 
         # get the file name to open
-        cslDir = self.settings.value('CslDir', '') # default = ''
+        cslDir = self.settings.value('CslDir', '')  # default = ''
         options = QFileDialog.Options()
         fileName, _ = QFileDialog.getOpenFileName(self,
-                "Open csl file",
-                cslDir,
-                "csl Files (*.csl);;All Files (*)",
-                options = options)
+                                                  "Open csl file",
+                                                  cslDir,
+                                                  "csl Files (*.csl);;All Files (*)",
+                                                  options=options)
 
-        if fileName:    # fileName is empty if cancelled
+        if fileName:  # fileName is empty if cancelled
             head, tail = os.path.split(fileName)
             self.settings.setValue('CslDir', head)
 
@@ -188,44 +203,46 @@ class MainApp(QWidget):
 
             self.setWindowTitle(TITLE + ' - ' + tail)
 
-            QApplication.setOverrideCursor(Qt.WaitCursor)
-            self.redraw()
-            self.addEdiFiles(fileName, head, tail)
-            QApplication.restoreOverrideCursor()
+            self.progressBar.setMaximum(0)
+            with wait_cursor():
+                self.addEdiFiles(fileName, head, tail)
+            self.progressBar.setMaximum(1)
+            self.progressBar.setValue(1)
 
     def addEdiFiles(self, cslFile, head, tail):
 
-        ediDir = self.settings.value('EdiDir', '') # default = ''
+        ediDir = self.settings.value('EdiDir', '')  # default = ''
         options = QFileDialog.Options()
         files, _ = QFileDialog.getOpenFileNames(self,
-                "Open .edi file(s) to add to " + tail,
-                ediDir,
-                "edi Files (*.edi, *.EDI);;All Files (*)", options=options)
+                                                "Open .edi file(s) to add to " + tail,
+                                                ediDir,
+                                                "edi Files (*.edi, *.EDI);;All Files (*)", options=options)
 
         if files:
             head, tail = os.path.split(files[0])
             self.settings.setValue('EdiDir', head)
 
-            #display the file names
+            # display the file names
             self.display('Opening Edi File(s):', colour='darkgreen')
             for f in files:
                 self.display(f, colour='darkgreen')
             self.display()
 
-            #initialise the dictionary
-            self.archiveDict=dict()
+            # initialise the dictionary
+            self.archiveDict = dict()
 
             warnings = read_archive_file(cslFile, self.archiveDict)
             # check returned warnings and display any
             if warnings:
                 QMessageBox.warning(self, "File Format Warning!",
-                    warnings,
-                    QMessageBox.Ok)
+                                    warnings,
+                                    QMessageBox.Ok)
 
             self.processAllEdiFiles(files, cslFile)
 
     def processAllEdiFiles(self, ediFileNames, cslFile):
-        """Process one or more files whos file names are in 'EdiFileNames' """
+        """Process one or more files who's file names are in 'EdiFileNames' """
+
         for ediFile in ediFileNames:
             self.display(ediFile + ':')
             self.display('Contacts not already in Archive:')
@@ -233,79 +250,77 @@ class MainApp(QWidget):
             self.addNewContacts(ediFile, self.archiveDict)
             self.display()
 
-        #Re-write the processed archive
+        # Re-write the processed archive
         re_write_csl(cslFile, self.archiveDict)
 
     def addNewContacts(self, FileName, archiveDict):
 
         """Parses the .edi file and adds the contact details to the list."""
 
-        #initialise
+        # initialise
         gettingData = False
 
-        #Open the input file
-        f = open(FileName,'r')
+        # Open the input file
+        f = open(FileName, 'r')
 
         try:
-            for line in f:      # iterate through all the lines in file 'f'
+            for line in f:  # iterate through all the lines in file 'f'
 
                 if gettingData:
 
-                    #parameters in 'line' are separated by ';'
-                    #split the line and create a list of the parameters
-                    parameters=line.split(';')
+                    # parameters in 'line' are separated by ';'
+                    # split the line and create a list of the parameters
+                    parameters = line.split(';')
 
-                    if len(parameters)>=10:     #check line contains 10 or more parameters
+                    if len(parameters) >= 10:  # check line contains 10 or more parameters
 
-                        #create a tuple (callsign,locator,exchange)
-                        contact=(parameters[2],parameters[9],parameters[8])
+                        # create a tuple (callsign,locator,exchange)
+                        contact = (parameters[2], parameters[9], parameters[8])
                         date = format_date(parameters[0])
 
                         if contact not in archiveDict:
-                            if contact[0]!='': #ignore blank callsign entries
-                                #append the parameters to the list and text display
-                                timesSeen=1
-                                archiveDict[contact]=[timesSeen,date+';']
-                                self.display(contact[0]+','+contact[1]+','+contact[2]+' on '+ date)
+                            if contact[0] != '':  # ignore blank callsign entries
+                                # append the parameters to the list and text display
+                                timesSeen = 1
+                                archiveDict[contact] = [timesSeen, date + ';']
+                                self.display(contact[0] + ',' + contact[1] + ',' + contact[2] + ' on ' + date)
                         else:
-                             #don't repeatedly add the same contact on the same date
+                            # don't repeatedly add the same contact on the same date
                             if date not in archiveDict[contact][1]:
-                                #increment times seen
-                                archiveDict[contact][0]+=1
+                                # increment times seen
+                                archiveDict[contact][0] += 1
 
-                                #add date to contact
-                                archiveDict[contact][1]+=date+';'
-
+                                # add date to contact
+                                archiveDict[contact][1] += date + ';'
 
                 elif '[QSORecords' in line:
-                    #skip until the line contains [QSORecords
-                    gettingData=True
+                    # skip until the line contains [QSORecords
+                    gettingData = True
         finally:
             if not gettingData:
-                archiveDict[('','','')]=[0,';'] #Create dummy entry if file does not contain [QSORecords
+                archiveDict[('', '', '')] = [0, ';']  # Create dummy entry if file does not contain [QSORecords
 
-            #close file at end of input
+            # close file at end of input
             f.close()
 
     def closeEvent(self, event):
 
-        '''Override inherited QMainWindow closeEvent.
+        """Override inherited QMainWindow closeEvent.
 
             Do any cleanup actions before the application closes.
 
             Saves the application geometry.
-            '''
+            """
 
         self.settings.setValue("geometry", self.saveGeometry())
-        #ArchiveUtilities3.mainWindow.maker = None
-        
+
         event.accept()
 
     # --- Methods not normally modified:
 
-    def display(self, *items, colour = 'black'):
+    def display(self, *items, colour='black'):
 
-        '''Display the items on the text edit control using their normal
+        """Display the items on the text edit control using their normal
             string representations on a single line.
             A space is added between the items.
             Any trailing spaces are removed.
@@ -317,7 +332,7 @@ class MainApp(QWidget):
             The colour may be be any string that may be
             passed to QColor, such as a name like 'red' or
             a hex value such as '#F0F0F0'.
-            '''
+            """
 
         display_string = ''
         for item in items:
@@ -346,11 +361,8 @@ class MainApp(QWidget):
 
         super().moveEvent(event)
 
+
 if __name__ == "__main__":
-
-        app = QApplication(sys.argv)
-        mainWindow = MainApp()
-        sys.exit(app.exec_())
-
-
-
+    app = QApplication(sys.argv)
+    mainWindow = MainApp()
+    sys.exit(app.exec_())

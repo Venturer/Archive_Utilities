@@ -6,7 +6,7 @@ The **Minos** contest logger has the facility to load an archive file containing
 
 You can get Minos from: [http://minos.sourceforge.net/history.html](http://minos.sourceforge.net/history.html)
 
-These files normally have have the extension **.csl** and are based on comma separated variable files.
+These files normally have the extension **.csl** and are based on comma separated variable files.
 
 The *Archive Utilities* allow you to create and manage these files. The archives can be created and updated from the **.edi** contest entry files produced by **Minos**. The **.edi** files can also be checked against an archive.
 
@@ -16,7 +16,7 @@ The *Archive Utilities* allow you to create and manage these files. The archives
 + **Archive Checker**. Use this to check a **.csl** archive you have *already* created to check its contents for possible errors that may have crept into it. [Click here for help](ArchiveChecker.html)
 + **Merge Archives**. Use this to merge two archives you may have created into one archive file. [Click here for help](MergeArchives.html)
 + **Archive Editor**. Use this to edit an archive. Using this utility helps to preserve the integrity and format of the file. [Click here for help](ArchiveEditor.html)
-+ **Contest Reporter**. Use this to check a **.edi** file against an archive for posible typographic mistakes (such as typing G9BAC instead of G9ABC). [Click here for help](ContestReporter.html)
++ **Contest Reporter**. Use this to check a **.edi** file against an archive for possible typographic mistakes (such as typing G9BAC instead of G9ABC). [Click here for help](ContestReporter.html)
 !+notes
 ## Notes
 
@@ -30,7 +30,7 @@ Date format is: **yyyy/mm/dd**
 
 *Right click* on the text displays for an edit menu which will allow you to cut and paste the report into another document.
 
-<a name="Changes" /a>
+`<a name="Changes" /a>`
 ## Changes from Version 2
 
 + Now built as a 32 bit windows application that no longer needs .NET to be installed. Some cosmetic changes result from this.
